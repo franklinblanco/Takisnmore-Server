@@ -828,8 +828,8 @@ namespace Server
         public Dictionary<string, string> CustomerKeys = new Dictionary<string, string>(); //this dictionary holds the phone number as a key and the identifier of the phone.
         public Dictionary<string, Product> AllProducts = new Dictionary<string, Product>(); //This Dictionary holds all the products availible from the DB in the Cache. Update regularly.
         public Dictionary<string, Shop> AllShops = new Dictionary<string, Shop>(); //This Dictionary holds all the Shops availible from the DB in the Cache. Update regularly.
-        public Dictionary<string, Category> AllShops = new Dictionary<string, Category>();
-        public Dictionary<string, Section> AllShops = new Dictionary<string, Section>();
+        public Dictionary<string, Category> AllCategories = new Dictionary<string, Category>();
+        public Dictionary<string, Section> AllSections = new Dictionary<string, Section>();
 
         private const string mediapath = "/media/";
 
