@@ -832,6 +832,8 @@ namespace Server
         #endregion
         #endregion
     }
+
+    #region CacheHandler
     public class CacheHandler
     {
         #region Singleton Pattern
@@ -914,6 +916,7 @@ namespace Server
             return true;
         }
     }
+    #endregion
 
     #region Enum types
     public enum RequestType
