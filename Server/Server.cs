@@ -629,9 +629,9 @@ namespace Server
             return CustomerKeys;
         }
 
-        public List<Product> GetAllProducts()
+        public Dictionary<string, Product> GetAllProducts()
         {
-            List<Product> allproducts = new List<Product>();
+            Dictionary<string, Product> allproducts = new Dictionary<string, Product>();
             MySqlCommand command = new MySqlCommand();
             command.Connection = connection;
             command.CommandText = "SELECT * FROM Products";
@@ -650,9 +650,34 @@ namespace Server
                     categoriesid = reader.GetString(6).Split(","),
                     shopid = reader.GetString(7)
                 };
-                allproducts.Add(product);
+                allproducts.Add(product.id, product);
             }
             return allproducts;
+        }
+
+        public Dictionary<string, Shop> GetAllShops()
+        {
+            Dictionary<string, Shop> allshops = new Dictionary<string, Shop>();
+            MySqlCommand command = new MySqlCommand();
+            command.Connection = connection;
+            command.CommandText = "SELECT * FROM Shops";
+            MySqlDataReader reader;
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Shop shop = new Shop
+                {
+                    id = reader.GetString(0),
+                    itemname = reader.GetString(1),
+                    owneraccountid = reader.GetString(2),
+                    description = reader.GetString(3),
+                    logoid = reader.GetString(4),
+                    phonenumber = reader.GetString(5),
+
+                };
+                allshops.Add(shop.id, shop);
+            }
+            return allshops;
         }
         #endregion
 
