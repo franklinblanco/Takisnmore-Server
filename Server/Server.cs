@@ -672,8 +672,7 @@ namespace Server
                     owneraccountid = reader.GetString(2),
                     description = reader.GetString(3),
                     logoid = reader.GetString(4),
-                    phonenumber = reader.GetString(5),
-
+                    phonenumber = reader.GetString(5)
                 };
                 allshops.Add(shop.id, shop);
             }
@@ -800,7 +799,9 @@ namespace Server
         #endregion
 
         public Dictionary<string, int> AppKeys = new Dictionary<string, int>();
-        public Dictionary<string, string> CustomerKeys = new Dictionary<string, string>(); //this dictionary holds the phone number as a key and the identifier of the phone
+        public Dictionary<string, string> CustomerKeys = new Dictionary<string, string>(); //this dictionary holds the phone number as a key and the identifier of the phone.
+        public Dictionary<string, Product> AllProducts = new Dictionary<string, Product>(); //This Dictionary holds all the products availible from the DB in the Cache. Update regularly.
+        public Dictionary<string, Shop> AllShops = new Dictionary<string, Shop>(); //This Dictionary holds all the Shops availible from the DB in the Cache. Update regularly.
 
         private const string mediapath = "/media/";
 
