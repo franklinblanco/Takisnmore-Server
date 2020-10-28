@@ -358,7 +358,6 @@ namespace Server
     #endregion
     #endregion
 
-
     #region Request Handling
     public class ServerRequestHandler
     {        
@@ -369,6 +368,7 @@ namespace Server
             clientStream = stream;
         }
 
+        #region ProccessRequest method
         public void ProcessRequest(string[] requestArgs, RequestType requestType, int permlevel)
         {
             switch (requestType)
@@ -447,6 +447,7 @@ namespace Server
                     break;
             }
         }
+        #endregion
 
         #region Message sending
         private bool SendMessage(string message)
@@ -830,8 +831,8 @@ namespace Server
             return false;
         }
         #endregion
-        #endregion
     }
+    #endregion
 
     #region CacheHandler
     public class CacheHandler
