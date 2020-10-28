@@ -59,6 +59,7 @@ namespace Server
             CacheHandler.Instance.AllShops = SqlHandler.Instance.GetAllShops();
             CacheHandler.Instance.AllCategories = SqlHandler.Instance.GetAllCategories();
             CacheHandler.Instance.AllSections = SqlHandler.Instance.GetAllSections();
+            CacheHandler.Instance.UpdateCategoryItems();
             //Connection with client stuff:
             Thread ServerThread;
             OpenSocket();
@@ -414,7 +415,7 @@ namespace Server
                                 string categoryitems = "";
                                 for (int x = 0; x < 3; x++)
                                 {
-                                    Product product =
+                                    
                                 }
                                 SendMessage();
                                 //OldFormat (bottom)
