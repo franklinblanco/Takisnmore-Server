@@ -704,6 +704,26 @@ namespace Server
             return allcategories;
         }
 
+        public Dictionary<string, Section> GetAllSections()
+        {
+            Dictionary<string, Section> allsections = new Dictionary<string, Section>();
+            MySqlCommand command = new MySqlCommand();
+            command.Connection = connection;
+            command.CommandText = "SELECT * FROM Shops";
+            MySqlDataReader reader;
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Section section = new Section
+                {
+                    id = reader.GetString(0),
+                    title = reader.GetString(1)
+                };
+                allsections.Add(section.id, section);
+            }
+            return allsections;
+        }
+
         #endregion
 
         #region Custom MYSQL Methods
