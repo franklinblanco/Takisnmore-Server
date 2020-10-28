@@ -386,7 +386,9 @@ namespace Server
                     switch (requestArgs[1])
                     {
                         case "HomePageCategories": //Give the client all the categories of the homepage
+
                             string categories = "Pa' ti/20 mins o menos/Repíte"; //placeholder of the titles
+
                             SendMessage(categories);
                             break;
                         case "CategoryItems":
@@ -626,7 +628,35 @@ namespace Server
             reader.Close();
             return CustomerKeys;
         }
+
+        public List<Product> GetAllProducts()
+        {
+            List<Product> allproducts = new List<Product>();
+            MySqlCommand command = new MySqlCommand();
+            command.Connection = connection;
+            command.CommandText = "SELECT * FROM Products";
+            MySqlDataReader reader;
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Product product = new Product
+                {
+                    id = reader.GetString(0),
+                    itemname = reader.GetString(1),
+                    description = reader.GetString(2),
+                    itemprice = reader.GetFloat(3),
+                    pictureids = reader.GetString(4).Split(","),
+                    discountpercent = reader.GetFloat(5),
+                    categoriesid = reader.GetString(6).Split(","),
+                    shopid = reader.GetString(7)
+                };
+                allproducts.Add(product);
+            }
+            return allproducts;
+        }
         #endregion
+
+        #region Custom MYSQL Methods
 
         public bool RegisterCustomer(string phonenumber, string name, string password, string deviceid, string gender)
         {
@@ -648,7 +678,7 @@ namespace Server
             return WriteDataIn("CustomerAccounts", new string[] { phonenumber, name, password, deviceid, gender, "0"});
         }
 
-        
+        #endregion
 
         #region Standard MYSQL formula Methods
         public string ReadDataWhere(string getColumn, string table, string whereColumn, string whereValue) //A test method to read a specific data from a table
