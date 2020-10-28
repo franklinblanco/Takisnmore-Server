@@ -57,6 +57,8 @@ namespace Server
             CacheHandler.Instance.CustomerKeys = SqlHandler.Instance.GetCustomerKeys();
             CacheHandler.Instance.AllProducts = SqlHandler.Instance.GetAllProducts();
             CacheHandler.Instance.AllShops = SqlHandler.Instance.GetAllShops();
+            CacheHandler.Instance.AllCategories = SqlHandler.Instance.GetAllCategories();
+            CacheHandler.Instance.AllSections = SqlHandler.Instance.GetAllSections();
             //Connection with client stuff:
             Thread ServerThread;
             OpenSocket();
@@ -680,6 +682,31 @@ namespace Server
             }
             return allshops;
         }
+
+        public Dictionary<string, Category> GetAllCategories()
+        {
+            Dictionary<string, Category> allshops = new Dictionary<string, Category>();
+            MySqlCommand command = new MySqlCommand();
+            command.Connection = connection;
+            command.CommandText = "SELECT * FROM Shops";
+            MySqlDataReader reader;
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Category category = new Category
+                {
+                    id = reader.GetString(0),
+                    itemname = reader.GetString(1),
+                    owneraccountid = reader.GetString(2),
+                    description = reader.GetString(3),
+                    logoid = reader.GetString(4),
+                    phonenumber = reader.GetString(5)
+                };
+                allshops.Add(category.id, category);
+            }
+            return allshops;
+        }
+
         #endregion
 
         #region Custom MYSQL Methods
@@ -804,6 +831,8 @@ namespace Server
         public Dictionary<string, string> CustomerKeys = new Dictionary<string, string>(); //this dictionary holds the phone number as a key and the identifier of the phone.
         public Dictionary<string, Product> AllProducts = new Dictionary<string, Product>(); //This Dictionary holds all the products availible from the DB in the Cache. Update regularly.
         public Dictionary<string, Shop> AllShops = new Dictionary<string, Shop>(); //This Dictionary holds all the Shops availible from the DB in the Cache. Update regularly.
+        public Dictionary<string, Category> AllShops = new Dictionary<string, Category>();
+        public Dictionary<string, Section> AllShops = new Dictionary<string, Section>();
 
         private const string mediapath = "/media/";
 
