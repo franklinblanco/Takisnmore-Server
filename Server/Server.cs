@@ -395,9 +395,8 @@ namespace Server
                             Category thirdcategory = CacheHandler.Instance.AllCategories["3"];
                             string categories = firstcategory.id + ":" + firstcategory.title + "/" 
                                 + secondcategory.id + ":" + secondcategory.title + "/" 
-                                + thirdcategory.id + ":" + thirdcategory.title
-                                /*"Pa' ti/20 mins o menos/Repíte" Old format*/  ; //Make the first 3 categories the default ones to show on the homepage. Send the ids.
-
+                                + thirdcategory.id + ":" + thirdcategory.title; 
+                            //Make the first 3 categories the default ones to show on the homepage. Send the ids.
                             SendMessage(categories);
                             break;
                         case "CategoryItems":
@@ -407,20 +406,20 @@ namespace Server
                                 Console.WriteLine("Client is missing arguments.");
                                 break;
                             }
-                            string categorytitle = requestArgs[2];
-                            if (categorytitle == "20 mins o menos") //Delete the title, make it the Key so you can lookup in the dictionary.
+                            string categoryid = requestArgs[2];
+                            if (CacheHandler.Instance.AllCategories.ContainsKey(categoryid)) //Lookup for the category key in the dictionary
                             {
                                 //Remove these placeholders with the product object properties, formatted correctly.
-                                SendMessage("Takis S:75:IJP000001:LJE000001/Takis M:230:IJP000002:LJE000001/Takis L:450:IJP000003:LJE000001"); //Format the items in the category with their name, price, product media id, then company pic media id0
-                            }
-                            if (categorytitle == "Pa' ti") //placeholder to check which category there is.
-                            {
-                                SendMessage("Takis S:75:IJP000001:LJE000001/Takis M:230:IJP000002:LJE000001/Takis L:450:IJP000003:LPN000003"); //Format the items in the category with their name, price, product media id, then company pic media id
-                            }
-                            if (categorytitle == "Repíte") //placeholder to check which category there is.
-                            {
-                                SendMessage("Takis S:75:IJP000001:LJE000001/Takis M:230:IJP000002:LJE000001/Takis L:450:IJP000003:LJE000001"); //Format the items in the category with their name, price, product media id, then company pic media id
-
+                                //New Format(bottom) For loop that joins all the categories (3 at the moment per category)
+                                string categoryitems = "";
+                                for (int x = 0; x < 3; x++)
+                                {
+                                    Product product =
+                                }
+                                SendMessage();
+                                //OldFormat (bottom)
+                                SendMessage("Takis S:75:IJP000001:LJE000001/Takis M:230:IJP000002:LJE000001/Takis L:450:IJP000003:LJE000001"); 
+                                //Format the items in the category with their name, price, product media id, then company pic media id0
                             }
                             break;
                         case "Media":
@@ -858,6 +857,7 @@ namespace Server
         public Dictionary<string, Product> AllProducts = new Dictionary<string, Product>(); //This Dictionary holds all the products availible from the DB in the Cache. Update regularly.
         public Dictionary<string, Shop> AllShops = new Dictionary<string, Shop>(); //This Dictionary holds all the Shops availible from the DB in the Cache. Update regularly.
         public Dictionary<string, Category> AllCategories = new Dictionary<string, Category>();
+        public Dictionary<string, string[]> CategoryItems = new Dictionary<string, string[]>();
         public Dictionary<string, Section> AllSections = new Dictionary<string, Section>();
 
         private const string mediapath = "/media/";
@@ -908,19 +908,23 @@ namespace Server
             }
             return filefolder + filename + extension;
         }
-        public bool testcopyfile(string pathname, string filename)
+
+        public void UpdateCategoryItems()
         {
-            try
+            CategoryItems.Clear();
+            foreach (Category category in AllCategories.Values)
             {
-                File.WriteAllBytes(Path.Combine(mediapath, filename), getmedia(pathname));
+                string id = category.id;
+                List<string> productsincategory = new List<string>();
+                foreach (Product product in AllProducts.Values)
+                {
+                    foreach (string s in product.categoriesid)
+                    {
+                        if (s == id) { productsincategory.Add(product.id); }
+                    }
+                }
+                CategoryItems.Add(category.id, productsincategory.ToArray());
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-                return false;
-            }
-            Console.WriteLine("Wrote file correctly!");
-            return true;
         }
     }
     #endregion
