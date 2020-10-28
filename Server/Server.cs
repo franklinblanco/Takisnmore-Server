@@ -685,7 +685,7 @@ namespace Server
 
         public Dictionary<string, Category> GetAllCategories()
         {
-            Dictionary<string, Category> allshops = new Dictionary<string, Category>();
+            Dictionary<string, Category> allcategories = new Dictionary<string, Category>();
             MySqlCommand command = new MySqlCommand();
             command.Connection = connection;
             command.CommandText = "SELECT * FROM Shops";
@@ -699,9 +699,9 @@ namespace Server
                     title = reader.GetString(1),
                     issearchable = reader.GetInt16(2)
                 };
-                allshops.Add(category.id, category);
+                allcategories.Add(category.id, category);
             }
-            return allshops;
+            return allcategories;
         }
 
         #endregion
