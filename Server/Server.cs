@@ -389,9 +389,9 @@ namespace Server
                     Console.WriteLine("Client has requested a read. Reading...");
                     switch (requestArgs[1])
                     {
-                        case "HomePageCategories": //Give the client all the categories of the homepage
+                        case "HomePageCategories": //Give the client 3 categories in the homepage, then load more as he goes down (Future implementation)
 
-                            string categories = "Pa' ti/20 mins o menos/Repíte"; //placeholder of the titles
+                            string categories = "Pa' ti/20 mins o menos/Repíte"; //Make the first 3 categories the default ones to show on the homepage. Send the ids.
 
                             SendMessage(categories);
                             break;
@@ -403,8 +403,9 @@ namespace Server
                                 break;
                             }
                             string categorytitle = requestArgs[2];
-                            if (categorytitle == "20 mins o menos") //placeholder to check which category there is.
+                            if (categorytitle == "20 mins o menos") //Delete the title, make it the Key so you can lookup in the dictionary.
                             {
+                                //Remove these placeholders with the product object properties, formatted correctly.
                                 SendMessage("Takis S:75:IJP000001:LJE000001/Takis M:230:IJP000002:LJE000001/Takis L:450:IJP000003:LJE000001"); //Format the items in the category with their name, price, product media id, then company pic media id0
                             }
                             if (categorytitle == "Pa' ti") //placeholder to check which category there is.
