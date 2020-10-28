@@ -390,8 +390,13 @@ namespace Server
                     switch (requestArgs[1])
                     {
                         case "HomePageCategories": //Give the client 3 categories in the homepage, then load more as he goes down (Future implementation)
-
-                            string categories = "Pa' ti/20 mins o menos/Repíte"; //Make the first 3 categories the default ones to show on the homepage. Send the ids.
+                            Category firstcategory = CacheHandler.Instance.AllCategories["1"];
+                            Category secondcategory = CacheHandler.Instance.AllCategories["2"];
+                            Category thirdcategory = CacheHandler.Instance.AllCategories["3"];
+                            string categories = firstcategory.id + ":" + firstcategory.title + "/" 
+                                + secondcategory.id + ":" + secondcategory.title + "/" 
+                                + thirdcategory.id + ":" + thirdcategory.title
+                                /*"Pa' ti/20 mins o menos/Repíte" Old format*/  ; //Make the first 3 categories the default ones to show on the homepage. Send the ids.
 
                             SendMessage(categories);
                             break;
