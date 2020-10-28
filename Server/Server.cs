@@ -696,11 +696,8 @@ namespace Server
                 Category category = new Category
                 {
                     id = reader.GetString(0),
-                    itemname = reader.GetString(1),
-                    owneraccountid = reader.GetString(2),
-                    description = reader.GetString(3),
-                    logoid = reader.GetString(4),
-                    phonenumber = reader.GetString(5)
+                    title = reader.GetString(1),
+                    issearchable = reader.GetInt16(2)
                 };
                 allshops.Add(category.id, category);
             }
