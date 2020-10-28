@@ -27,7 +27,6 @@ namespace Server
         ServerRequestHandler srh = new ServerRequestHandler();
         private TcpListener serverSocket = new TcpListener(IPAddress.Parse("207.154.255.138"), 5001);
 
-
         #region Singleton Pattern
         private static Server instance = new Server();
         private Server() { }
@@ -299,8 +298,6 @@ namespace Server
         }
         #endregion
 
-
-
         #region Encoding Methods
         private string decodeMessage(byte[] message)
         {
@@ -413,13 +410,21 @@ namespace Server
                                 //Remove these placeholders with the product object properties, formatted correctly.
                                 //New Format(bottom) For loop that joins all the categories (3 at the moment per category)
                                 string categoryitems = "";
+                                string[] productids = CacheHandler.Instance.CategoryItems[categoryid];
                                 for (int x = 0; x < 3; x++)
                                 {
-                                    
+                                    if (x < productids.Length)
+                                    {
+                                        Product product = CacheHandler.Instance.AllProducts[productids[x]];
+                                        categoryitems += product.itemname + ":"
+                                            + product.itemprice.ToString() + ":"
+                                            + product.pictureids[0] + ":"
+                                            + CacheHandler.Instance.AllShops[product.shopid].logoid + "/";
+                                    }
                                 }
-                                SendMessage();
+                                SendMessage(categoryitems);
                                 //OldFormat (bottom)
-                                SendMessage("Takis S:75:IJP000001:LJE000001/Takis M:230:IJP000002:LJE000001/Takis L:450:IJP000003:LJE000001"); 
+                                //SendMessage("Takis S:75:IJP000001:LJE000001/Takis M:230:IJP000002:LJE000001/Takis L:450:IJP000003:LJE000001"); 
                                 //Format the items in the category with their name, price, product media id, then company pic media id0
                             }
                             break;
