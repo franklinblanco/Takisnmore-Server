@@ -55,6 +55,8 @@ namespace Server
             SqlHandler.Instance.ConnectToDB();
             CacheHandler.Instance.AppKeys = SqlHandler.Instance.GetAppKeys();
             CacheHandler.Instance.CustomerKeys = SqlHandler.Instance.GetCustomerKeys();
+            CacheHandler.Instance.AllProducts = SqlHandler.Instance.GetAllProducts();
+            CacheHandler.Instance.AllShops = SqlHandler.Instance.GetAllShops();
             //Connection with client stuff:
             Thread ServerThread;
             OpenSocket();
