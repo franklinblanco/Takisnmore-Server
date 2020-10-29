@@ -421,16 +421,17 @@ namespace Server
                                         string productmediaids = "";
                                         foreach (string mediaid in product.pictureids)
                                         {
-                                            productmediaids += mediaid + ", ";
+                                            productmediaids += mediaid + ",";
                                         }
-                                        productmediaids = productmediaids.Remove(productmediaids.Length - 2);
+                                        productmediaids = productmediaids.Remove(productmediaids.Length - 1);
 
                                         categoryitems += product.itemname + ":"
                                             + product.itemprice.ToString() + ":"
-                                            + product.description + ":"
-                                            + CacheHandler.Instance.AllShops[product.shopid].itemname + ":"
-                                            + productmediaids + ":"
-                                            + CacheHandler.Instance.AllShops[product.shopid].logoid + "/";
+                                            + product.description + ":" //2nd parameter
+                                            + CacheHandler.Instance.AllShops[product.shopid].itemname + ":" 
+                                            + productmediaids + ":" //4th parameter
+                                            + CacheHandler.Instance.AllShops[product.shopid].logoid + ":"
+                                            + product.id + "/"; //6th parameter
                                     }
                                 }
                                 categoryitems = categoryitems.Remove(categoryitems.Length - 1);
