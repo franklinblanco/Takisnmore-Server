@@ -660,14 +660,15 @@ namespace Server
                     id = reader.GetString(0),
                     itemname = reader.GetString(1),
                     description = reader.GetString(2),
-                    itemprice = reader.GetFloat(3),
+                    itemprice = reader.GetDecimal(3),
                     pictureids = reader.GetString(4).Split(","),
-                    discountpercent = reader.GetFloat(5),
+                    discountpercent = reader.GetDecimal(5),
                     categoriesid = reader.GetString(6).Split(","),
                     shopid = reader.GetString(7)
                 };
                 allproducts.Add(product.id, product);
             }
+            reader.Close();
             return allproducts;
         }
 
@@ -692,6 +693,7 @@ namespace Server
                 };
                 allshops.Add(shop.id, shop);
             }
+            reader.Close();
             return allshops;
         }
 
@@ -700,7 +702,7 @@ namespace Server
             Dictionary<string, Category> allcategories = new Dictionary<string, Category>();
             MySqlCommand command = new MySqlCommand();
             command.Connection = connection;
-            command.CommandText = "SELECT * FROM Shops";
+            command.CommandText = "SELECT * FROM Categories";
             MySqlDataReader reader;
             reader = command.ExecuteReader();
             while (reader.Read())
@@ -709,10 +711,11 @@ namespace Server
                 {
                     id = reader.GetString(0),
                     title = reader.GetString(1),
-                    issearchable = reader.GetInt16(2)
+                    issearchable = reader.GetBoolean(2)
                 };
                 allcategories.Add(category.id, category);
             }
+            reader.Close();
             return allcategories;
         }
 
@@ -721,7 +724,7 @@ namespace Server
             Dictionary<string, Section> allsections = new Dictionary<string, Section>();
             MySqlCommand command = new MySqlCommand();
             command.Connection = connection;
-            command.CommandText = "SELECT * FROM Shops";
+            command.CommandText = "SELECT * FROM Sections";
             MySqlDataReader reader;
             reader = command.ExecuteReader();
             while (reader.Read())
@@ -733,6 +736,7 @@ namespace Server
                 };
                 allsections.Add(section.id, section);
             }
+            reader.Close();
             return allsections;
         }
 

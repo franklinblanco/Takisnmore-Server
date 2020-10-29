@@ -8,6 +8,6 @@ namespace Server
     {
         public string id;
         public string title;
-        public Int16 issearchable;
+        public bool issearchable;
     }
 }
