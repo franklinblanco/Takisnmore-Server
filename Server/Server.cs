@@ -453,6 +453,16 @@ namespace Server
                                 SendMessage(AllSectionNames);
                             }
                             break;
+                        case "Section":
+                            if (requestArgs.Length < 3)
+                            {
+                                SendMessage("1304"); //missing arguments
+                                Console.WriteLine("Client is missing arguments.");
+                                break;
+                            }
+                            string sectionid = requestArgs[2];
+                            CacheHandler.Instance.AllCategories;
+                            break;
                         case "Media":
                             if (requestArgs.Length < 3)
                             {
@@ -892,6 +902,7 @@ namespace Server
         public Dictionary<string, Shop> AllShops = new Dictionary<string, Shop>(); //This Dictionary holds all the Shops availible from the DB in the Cache. Update regularly.
         public Dictionary<string, Category> AllCategories = new Dictionary<string, Category>();
         public Dictionary<string, string[]> CategoryItems = new Dictionary<string, string[]>();
+        public Dictionary<string, string[]> SectionCategories = new Dictionary<string, string[]>();
         public Dictionary<string, Section> AllSections = new Dictionary<string, Section>();
 
         private const string mediapath = "/media/";
@@ -958,6 +969,22 @@ namespace Server
                     }
                 }
                 CategoryItems.Add(category.id, productsincategory.ToArray());
+            }
+        }
+        public void UpdateSectionCategories()
+        {
+            SectionCategories.Clear();
+            foreach (Section section in AllSections.Values)
+            {
+                string id = section.id;
+                List<string> categoriesinsection = new List<string>();
+                foreach (Category category in AllCategories.Values)
+                {
+                    if (category.)
+                    {
+
+                    }
+                }
             }
         }
     }

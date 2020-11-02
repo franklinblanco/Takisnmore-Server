@@ -9,5 +9,6 @@ namespace Server
         public string id;
         public string title;
         public bool issearchable;
+        public string sectionid;
     }
 }
