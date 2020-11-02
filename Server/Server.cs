@@ -439,9 +439,18 @@ namespace Server
                                 //OldFormat (bottom)
                                 //SendMessage("Takis S:75:IJP000001:LJE000001/Takis M:230:IJP000002:LJE000001/Takis L:450:IJP000003:LJE000001"); 
                                 //Format the items in the category with their name, price, product media id, then company pic media id0
-                            } else
+                            }
+                            break;
+                        case "Sections":
+                            if (CacheHandler.Instance.AllSections.Count > 0)
                             {
-                                Console.WriteLine("Didn't send shit! @ Categoryitems");
+                                string AllSectionNames = "";
+                                foreach (Section section in CacheHandler.Instance.AllSections.Values)
+                                {
+                                    AllSectionNames += section.title + "/";
+                                }
+                                AllSectionNames = AllSectionNames.Remove(AllSectionNames.Length - 1);
+                                SendMessage(AllSectionNames);
                             }
                             break;
                         case "Media":
@@ -626,7 +635,6 @@ namespace Server
             connection.Close();
         }
         #endregion
-
 
         #region Getting Keys from MYSQL Methods
         public Dictionary<string, int> GetAppKeys() //This method stores all the appkeys into the Dictionary (should only be done at the start of the server).
