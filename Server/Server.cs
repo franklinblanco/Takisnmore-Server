@@ -399,6 +399,7 @@ namespace Server
                             {
                                 int pagenumber = Int16.Parse(requestArgs[3]);
                                 string[] categoriesinsection = CacheHandler.Instance.SectionCategories[requestArgs[2]];
+                                if (categoriesinsection.Length < 1) { SendMessage("1305"); break; } //Means there's no categories in this section
                                 string categories = "";
                                 for (int x = (pagenumber * 3) - 3; x < pagenumber * 3; x++)
                                 {
@@ -408,6 +409,7 @@ namespace Server
                                         categories += category.id + ":" + category.title + "/";
                                     }
                                 }
+                                if (categories.Length < 1) { SendMessage("1305"); break; } //Means there's no categories in this section
                                 categories = categories.Remove(categories.Length - 1);
                                 SendMessage(categories);
                                 break;
