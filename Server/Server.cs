@@ -399,13 +399,16 @@ namespace Server
                             {
                                 int pagenumber = Int16.Parse(requestArgs[3]);
                                 string[] categoriesinsection = CacheHandler.Instance.SectionCategories[requestArgs[2]];
-                                Category firstcategory = CacheHandler.Instance.AllCategories[categoriesinsection[(pagenumber * 3) - 2]];
-                                Category secondcategory = CacheHandler.Instance.AllCategories[categoriesinsection[(pagenumber * 3) - 1]];
-                                Category thirdcategory = CacheHandler.Instance.AllCategories[categoriesinsection[(pagenumber * 3)]];
-                                string categories = firstcategory.id + ":" + firstcategory.title + "/"
-                                    + secondcategory.id + ":" + secondcategory.title + "/"
-                                    + thirdcategory.id + ":" + thirdcategory.title;
-                                //Make the first 3 categories the default ones to show on the homepage. Send the ids.
+                                string categories = "";
+                                for (int x = (pagenumber * 3) - 3; x < pagenumber * 3; x++)
+                                {
+                                    if (categoriesinsection.Length > x)
+                                    {
+                                        Category category = CacheHandler.Instance.AllCategories[categoriesinsection[x]];
+                                        categories += category.id + ":" + category.title + "/";
+                                    }
+                                }
+                                categories = categories.Remove(categories.Length - 1);
                                 SendMessage(categories);
                                 break;
                             }
