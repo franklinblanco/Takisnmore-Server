@@ -388,15 +388,28 @@ namespace Server
                     Console.WriteLine("Client has requested a read. Reading...");
                     switch (requestArgs[1])
                     {
-                        case "HomePageCategories": //Give the client 3 categories in the homepage, then load more as he goes down (Future implementation)
-                            Category firstcategory = CacheHandler.Instance.AllCategories["1"];
-                            Category secondcategory = CacheHandler.Instance.AllCategories["2"];
-                            Category thirdcategory = CacheHandler.Instance.AllCategories["3"];
-                            string categories = firstcategory.id + ":" + firstcategory.title + "/" 
-                                + secondcategory.id + ":" + secondcategory.title + "/" 
-                                + thirdcategory.id + ":" + thirdcategory.title; 
-                            //Make the first 3 categories the default ones to show on the homepage. Send the ids.
-                            SendMessage(categories);
+                        case "Categories": //Give the client 3 categories per request. Request has to be as follows: Categories-Sectionid-Page (page means the multiple of 3 that the client wants)
+                            if (requestArgs.Length < 4)
+                            {
+                                SendMessage("1304"); //missing arguments
+                                Console.WriteLine("Client is missing arguments.");
+                                break;
+                            }
+                            if (CacheHandler.Instance.AllSections.ContainsKey(requestArgs[2]))
+                            {
+                                int pagenumber = Int16.Parse(requestArgs[3]);
+                                string[] categoriesinsection = CacheHandler.Instance.SectionCategories[requestArgs[2]];
+                                Category firstcategory = CacheHandler.Instance.AllCategories[categoriesinsection[(pagenumber * 3) - 2]];
+                                Category secondcategory = CacheHandler.Instance.AllCategories[categoriesinsection[(pagenumber * 3) - 1]];
+                                Category thirdcategory = CacheHandler.Instance.AllCategories[categoriesinsection[(pagenumber * 3)]];
+                                string categories = firstcategory.id + ":" + firstcategory.title + "/"
+                                    + secondcategory.id + ":" + secondcategory.title + "/"
+                                    + thirdcategory.id + ":" + thirdcategory.title;
+                                //Make the first 3 categories the default ones to show on the homepage. Send the ids.
+                                SendMessage(categories);
+                                break;
+                            }
+                            
                             break;
                         case "CategoryItems":
                             if (requestArgs.Length < 3)
