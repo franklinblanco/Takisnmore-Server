@@ -10,5 +10,6 @@ namespace Server
         public string title;
         public bool issearchable;
         public string sectionid;
+        public string thumbnailid;
     }
 }

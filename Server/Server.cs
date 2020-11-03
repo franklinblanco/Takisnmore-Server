@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using System.Linq;
 using System.IO;
 using Twilio.Rest.Trunking.V1;
+using Twilio.Rest.Events.V1;
 
 namespace Server
 {
@@ -406,7 +407,7 @@ namespace Server
                                     if (categoriesinsection.Length > x)
                                     {
                                         Category category = CacheHandler.Instance.AllCategories[categoriesinsection[x]];
-                                        categories += category.id + ":" + category.title + "/";
+                                        categories += category.id + ":" + category.title + ":" + category.thumbnailid + "/";
                                     }
                                 }
                                 if (categories.Length < 1) { SendMessage("1305"); break; } //Means there's no categories in this section
@@ -776,7 +777,8 @@ namespace Server
                     id = reader.GetString(0),
                     title = reader.GetString(1),
                     issearchable = reader.GetBoolean(2),
-                    sectionid = reader.GetString(3)
+                    sectionid = reader.GetString(3),
+                    thumbnailid = reader.GetString(4)
                 };
                 allcategories.Add(category.id, category);
             }
@@ -964,6 +966,9 @@ namespace Server
                     break;
                 case 'L':
                     filefolder = "logos/";
+                    break;
+                case 'C':
+                    filefolder = "icons/";
                     break;
                     //Add the other folders (located in /media/), but for now this is okay.
             }
