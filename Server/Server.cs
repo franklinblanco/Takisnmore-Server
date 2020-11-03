@@ -59,6 +59,7 @@ namespace Server
             CacheHandler.Instance.AllCategories = SqlHandler.Instance.GetAllCategories();
             CacheHandler.Instance.AllSections = SqlHandler.Instance.GetAllSections();
             CacheHandler.Instance.UpdateCategoryItems();
+            CacheHandler.Instance.UpdateSectionCategories();
             //Connection with client stuff:
             Thread ServerThread;
             OpenSocket();
@@ -407,7 +408,6 @@ namespace Server
                             string categoryid = requestArgs[2];
                             if (CacheHandler.Instance.AllCategories.ContainsKey(categoryid)) //Lookup for the category key in the dictionary
                             {
-                                //Remove these placeholders with the product object properties, formatted correctly.
                                 //New Format(bottom) For loop that joins all the categories (3 at the moment per category)
                                 string categoryitems = "";
                                 string[] productids = CacheHandler.Instance.CategoryItems[categoryid];
@@ -436,9 +436,6 @@ namespace Server
                                 }
                                 categoryitems = categoryitems.Remove(categoryitems.Length - 1);
                                 SendMessage(categoryitems);
-                                //OldFormat (bottom)
-                                //SendMessage("Takis S:75:IJP000001:LJE000001/Takis M:230:IJP000002:LJE000001/Takis L:450:IJP000003:LJE000001"); 
-                                //Format the items in the category with their name, price, product media id, then company pic media id0
                             }
                             break;
                         case "Sections":
@@ -461,7 +458,22 @@ namespace Server
                                 break;
                             }
                             string sectionid = requestArgs[2];
-                            CacheHandler.Instance.AllCategories;
+                            if (CacheHandler.Instance.SectionCategories.ContainsKey(sectionid))
+                            {
+                                string[] categoryids = CacheHandler.Instance.SectionCategories[sectionid];
+                                string sectioncategories = "";
+                                foreach (string catid in categoryids)
+                                {
+                                    Category category = CacheHandler.Instance.AllCategories[catid];
+                                    sectioncategories += category.id + "," + category.title + ",";
+                                    if(category.issearchable) { sectioncategories += "true";  }
+                                    sectioncategories += "/";
+                                    //Category id, Category title, issearchable true or nothing then /
+                                }
+                                sectioncategories = sectioncategories.Remove(sectioncategories.Length - 1);
+                                SendMessage(sectioncategories);
+
+                            }
                             break;
                         case "Media":
                             if (requestArgs.Length < 3)
@@ -745,7 +757,8 @@ namespace Server
                 {
                     id = reader.GetString(0),
                     title = reader.GetString(1),
-                    issearchable = reader.GetBoolean(2)
+                    issearchable = reader.GetBoolean(2),
+                    sectionid = reader.GetString(3)
                 };
                 allcategories.Add(category.id, category);
             }
@@ -968,7 +981,7 @@ namespace Server
                         if (s == id) { productsincategory.Add(product.id); }
                     }
                 }
-                CategoryItems.Add(category.id, productsincategory.ToArray());
+                CategoryItems.Add(id, productsincategory.ToArray());
             }
         }
         public void UpdateSectionCategories()
@@ -980,11 +993,12 @@ namespace Server
                 List<string> categoriesinsection = new List<string>();
                 foreach (Category category in AllCategories.Values)
                 {
-                    if (category.)
+                    if (category.sectionid == id)
                     {
-
+                        categoriesinsection.Add(category.id);
                     }
                 }
+                SectionCategories.Add(id, categoriesinsection.ToArray());
             }
         }
     }
