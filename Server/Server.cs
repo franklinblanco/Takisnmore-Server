@@ -407,7 +407,9 @@ namespace Server
                                     if (categoriesinsection.Length > x)
                                     {
                                         Category category = CacheHandler.Instance.AllCategories[categoriesinsection[x]];
-                                        categories += category.id + ":" + category.title + ":" + category.thumbnailid + "/";
+                                        categories += category.id + ":" + category.title + ":" + category.thumbnailid + ":";
+                                        if (category.issearchable) { categories += "true"; } else { categories += "false"; }
+                                        categories += "/";
                                     }
                                 }
                                 if (categories.Length < 1) { SendMessage("1305"); break; } //Means there's no categories in this section
@@ -469,7 +471,7 @@ namespace Server
                                 SendMessage(AllSectionNames);
                             }
                             break;
-                        case "Section":
+                        /*case "Section":
                             if (requestArgs.Length < 3)
                             {
                                 SendMessage("1304"); //missing arguments
@@ -493,7 +495,7 @@ namespace Server
                                 SendMessage(sectioncategories);
 
                             }
-                            break;
+                            break;*/
                         case "Media":
                             if (requestArgs.Length < 3)
                             {
@@ -577,14 +579,17 @@ namespace Server
             if (packetlength <= 32767 && packetlength > 0)
             {
                 is32bitint = false;
+                Int16 packetlength16b = (Int16)packetlength;
                 packetwithheader = new byte[packetlength + 3];
-                packetwithheader = new byte[] { Convert.ToByte(is32bitint) }.Concat(BitConverter.GetBytes(packetlength)).Concat(packet).ToArray(); //Sum the boolean byte[], the int byte[] and the packet 
+                packetwithheader = new byte[] { Convert.ToByte(is32bitint) }.Concat(BitConverter.GetBytes(packetlength16b)).Concat(packet).ToArray(); //Sum the boolean byte[], the int byte[] and the packet 
+                Console.WriteLine("Packet is 16bit int");
             }
             else if (packetlength > 32767 && packetlength <= 2147483647)
             {
                 is32bitint = true;
                 packetwithheader = new byte[packetlength + 5];
                 packetwithheader = new byte[] { Convert.ToByte(is32bitint) }.Concat(BitConverter.GetBytes(packetlength)).Concat(packet).ToArray(); //Sum the boolean byte[], the int byte[] and the packet 
+                Console.WriteLine("Packet is 32bit int");
             }
             else
             {
